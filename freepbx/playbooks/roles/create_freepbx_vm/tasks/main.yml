@@ -1,0 +1,79 @@
+---
+- name: Clone FreePBX VM from template
+  environment:
+    PROXMOX_TIMEOUT: "{{ proxmox_timeout | default('900') }}"
+  community.proxmox.proxmox_kvm:
+    api_host: "{{ proxmox_host }}"
+    api_user: "{{ proxmox_user }}"
+    api_token_id: "{{ proxmox_token_id }}"
+    api_token_secret: "{{ api_token_secret }}"
+    validate_certs: "{{ validate_certs }}"
+    timeout: "{{ task_timeout | default(900) }}"
+
+    state: present
+    node: "{{ source_node }}"
+    target: "{{ destination_node }}"
+    clone: "{{ source_name }}"
+    name: "{{ target_name }}"
+    full: "{{ is_full_clone }}"
+    storage: "{{ storage_type }}"
+    cores: "{{ core_count }}"
+    memory: "{{ memory_size }}"
+    pool: "{{ target_pool }}"
+
+    net:
+      net0: "virtio,bridge={{ target_vmbridge }}"
+
+    ide: "{{ ({ 'ide2': (cloud_init_storage ~ ':cloudinit') }) if use_cloud_init else omit }}"
+    ciuser: "{{ cloud_init_user }}"
+    cipassword: "{{ cloud_init_password }}"
+    sshkeys: "{{ cloud_init_sshkeys | default(omit) }}"
+    nameservers: "{{ (target_nameservers | join(' ')) if use_cloud_init else omit }}"
+    ipconfig: "{{ ({ 'ipconfig0': ( 'dhcp' if cloud_init_dhcp else ('ip=' ~ target_ip ~ '/' ~ cloud_init_cidr_prefix ~ ',gw=' ~ target_gateway) ) }) if use_cloud_init else omit }}"
+  register: vm_create
+
+- name: Remember created vmid
+  set_fact:
+    vm_id: "{{ (target_newid | default(vm_create.vmid | default('100'))) | string }}"
+  when: not ansible_check_mode
+
+- name: Set default vmid for check mode
+  set_fact:
+    vm_id: "100"
+  when: ansible_check_mode
+
+- name: Ensure net0 uses {{ target_vmbridge }}
+  environment:
+    PROXMOX_TIMEOUT: "{{ proxmox_timeout | default('900') }}"
+  community.proxmox.proxmox_nic:
+    api_host: "{{ proxmox_host }}"
+    api_user: "{{ proxmox_user }}"
+    api_token_id: "{{ proxmox_token_id }}"
+    api_token_secret: "{{ api_token_secret }}"
+    validate_certs: "{{ validate_certs }}"
+    vmid: "{{ vm_id }}"
+    interface: "net0"
+    model: "virtio"
+    bridge: "{{ target_vmbridge }}"
+    state: present
+
+- name: Start FreePBX VM
+  environment:
+    PROXMOX_TIMEOUT: "{{ proxmox_timeout | default('900') }}"
+  community.proxmox.proxmox_kvm:
+    api_host: "{{ proxmox_host }}"
+    api_user: "{{ proxmox_user }}"
+    api_token_id: "{{ proxmox_token_id }}"
+    api_token_secret: "{{ api_token_secret }}"
+    validate_certs: "{{ validate_certs }}"
+    timeout: "{{ task_timeout }}"
+    node: "{{ destination_node }}"
+    vmid: "{{ vm_id }}"
+    state: started
+
+- name: Wait briefly for boot to begin
+  wait_for:
+    timeout: 20
+
+
+

@@ -1,0 +1,30 @@
+---
+- name: Test single FreePBX VM deployment
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  environment:
+    PROXMOX_TIMEOUT: "1200"
+
+  tasks:
+    - name: Deploy single FreePBX VM (Range 1)
+      include_role:
+        name: create_freepbx_vm
+      vars:
+        task_timeout: 1200
+        target_name: "BT-freepbx-1"
+        destination_node: "am-kvm-01"
+        target_pool: "bt01"
+        target_vmbridge: "vmbr01"
+        
+        use_cloud_init: true
+        cloud_init_user: "root"
+        cloud_init_password: "changeme"
+    
+        cloud_init_dhcp: false
+        cloud_init_cidr_prefix: 24
+        target_ip: "100.101.1.42"
+        target_gateway: "100.101.1.1"
+        
+      
+

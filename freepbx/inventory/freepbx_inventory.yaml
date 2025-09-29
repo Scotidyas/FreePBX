@@ -1,0 +1,65 @@
+all:
+  children:
+    range_1:
+      hosts:
+        BT-freepbx-1:
+          zone_number: 1
+          target_node: "am-kvm-01"
+          vmbridge: "vmbr01"
+          pool: "bt01"
+    
+    range_2:
+      hosts:
+        BT-freepbx-2:
+          zone_number: 2
+          target_node: "am-kvm-02"
+          vmbridge: "vmbr02"
+          pool: "bt02"
+    
+    range_3:
+      hosts:
+        BT-freepbx-3:
+          zone_number: 3
+          target_node: "am-kvm-03"
+          vmbridge: "vmbr03"
+          pool: "bt03"
+    
+    range_4:
+      hosts:
+        BT-freepbx-4:
+          zone_number: 4
+          target_node: "am-kvm-04"
+          vmbridge: "vmbr04"
+          pool: "bt04"
+    
+    range_5:
+      hosts:
+        BT-freepbx-5:
+          zone_number: 5
+          target_node: "am-kvm-05"
+          vmbridge: "vmbr05"
+          pool: "bt05"
+    
+    range_6:
+      hosts:
+        BT-freepbx-6:
+          zone_number: 6
+          target_node: "am-kvm-06"
+          vmbridge: "vmbr06"
+          pool: "bt06"
+    
+    range_7:
+      hosts:
+        BT-freepbx-7:
+          zone_number: 7
+          target_node: "am-kvm-07"
+          vmbridge: "vmbr07"
+          pool: "bt07"
+    
+    range_8:
+      hosts:
+        BT-freepbx-8:
+          zone_number: 8
+          target_node: "am-kvm-08"
+          vmbridge: "vmbr08"
+          pool: "bt08"

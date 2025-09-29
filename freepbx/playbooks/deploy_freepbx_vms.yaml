@@ -1,0 +1,56 @@
+---
+- name: Deploy FreePBX VMs for all ranges
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  environment:
+    PROXMOX_TIMEOUT: "240"
+  vars:
+    ranges_to_deploy:
+      - range_1
+      - range_2
+      - range_3
+      - range_4
+      - range_5
+      - range_6
+      - range_7
+      - range_8
+
+  tasks:
+    - name: Deploy FreePBX VMs for each range
+      include_role:
+        name: create_freepbx_vm
+      vars:
+        target_name: "{{ item }}"
+        destination_node: "{{ hostvars[item].target_node }}"
+        target_pool: "{{ hostvars[item].pool }}"
+        target_vmbridge: "{{ hostvars[item].vmbridge }}"
+        
+        target_ip: "100.10{{ hostvars[item].zone_number }}.1.42"
+        target_gateway: "100.10{{ hostvars[item].zone_number }}.1.1"
+        target_netmask: "255.255.255.0"
+        
+        
+        target_nameservers: "{{ target_nameservers }}"
+        
+      loop: "{{ groups[item] }}"
+      loop_control:
+        label: "{{ item }}"
+      when: groups[item] is defined
+      with_items: "{{ ranges_to_deploy }}"
+
+    - name: Display deployment summary
+      debug:
+        msg: |
+          FreePBX VMs deployment completed!
+          
+          Deployed VMs:
+          {% for range in ranges_to_deploy %}
+          {% if groups[range] is defined %}
+          {% for vm in groups[range] %}
+          - {{ vm }}: 100.10{{ hostvars[vm].zone_number }}.1.42 (Node: {{ hostvars[vm].target_node }}, Bridge: {{ hostvars[vm].vmbridge }})
+          {% endfor %}
+          {% endif %}
+          {% endfor %}
+          
+          All VMs are accessible via SSH with cloud-init credentials

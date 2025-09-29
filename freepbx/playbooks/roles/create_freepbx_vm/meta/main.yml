@@ -1,0 +1,17 @@
+---
+galaxy_info:
+  author: FreePBX Automation Team
+  description: Role to create FreePBX VMs from template on Proxmox
+  company: AmberMist
+  license: MIT
+  min_ansible_version: "2.9"
+  platforms:
+    - name: Proxmox
+      versions:
+        - all
+  galaxy_tags:
+    - proxmox
+    - freepbx
+    - virtualization
+
+dependencies: []

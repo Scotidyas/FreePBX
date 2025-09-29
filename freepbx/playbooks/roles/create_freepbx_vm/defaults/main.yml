@@ -1,0 +1,25 @@
+---
+target_state: "present"
+
+is_full_clone: true
+core_count: 4
+memory_size: 4096
+storage_type: "nfs-fast"
+
+
+target_nameservers:
+  - "8.8.8.8"
+  - "1.1.1.1"
+
+
+use_cloud_init: false
+
+cloud_init_user: "root"
+cloud_init_password: "changeme"
+cloud_init_sshkeys: ""
+
+cloud_init_dhcp: false
+
+cloud_init_cidr_prefix: 24
+
+cloud_init_storage: "{{ storage_type }}"

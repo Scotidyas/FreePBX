@@ -1,0 +1,20 @@
+proxmox_host: "am-kvm-10.ambermist.lt"
+proxmox_user: "p.vaitkevicius@ambermist.lt"
+proxmox_token_id: "ansible3"
+api_token_secret: "55cb1ef1-18d1-477d-ab35-dd43081cab96"
+
+validate_certs: false
+task_timeout: 360
+
+source_node: "am-kvm-10"
+source_name: "PBX-clone-for-testing"
+
+is_full_clone: true
+core_count: 4
+memory_size: 4096
+storage_type: "nfs-fast"
+
+
+target_nameservers:
+  - "8.8.8.8"
+  - "1.1.1.1"
