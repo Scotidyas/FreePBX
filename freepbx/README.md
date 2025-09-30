@@ -40,14 +40,14 @@ freepbx/
 
 ### Node Assignment
 - Template Node: `am-kvm-10`
-- Range 1: `am-kvm-01` (bridge: `vmbr01`)
-- Range 2: `am-kvm-02` (bridge: `vmbr02`)
-- Range 3: `am-kvm-03` (bridge: `vmbr03`)
-- Range 4: `am-kvm-04` (bridge: `vmbr04`)
-- Range 5: `am-kvm-05` (bridge: `vmbr05`)
-- Range 6: `am-kvm-06` (bridge: `vmbr06`)
-- Range 7: `am-kvm-07` (bridge: `vmbr07`)
-- Range 8: `am-kvm-08` (bridge: `vmbr08`)
+- Range 1: `am-kvm-01` (bridge: `vmbr101`)
+- Range 2: `am-kvm-02` (bridge: `vmbr102`)
+- Range 3: `am-kvm-03` (bridge: `vmbr103`)
+- Range 4: `am-kvm-04` (bridge: `vmbr104`)
+- Range 5: `am-kvm-05` (bridge: `vmbr105`)
+- Range 6: `am-kvm-06` (bridge: `vmbr106`)
+- Range 7: `am-kvm-07` (bridge: `vmbr107`)
+- Range 8: `am-kvm-08` (bridge: `vmbr108`)
 
 ### VM Specifications
 - CPU: 4 cores
